@@ -8,4 +8,6 @@
 
 * Dummy Q-learning (table)
 
+* Q-learning (table) exploit&exploration and discounted future reward
+
 (to be continue...)
