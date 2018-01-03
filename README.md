@@ -10,4 +10,10 @@
 
 * Q-learning (table) exploit & exploration and discounted future reward
 
+* Stochastic(non-deterministic) Q-learning
+
+* Q-Network
+
+* Deep Q-Network(DQN)
+
 (to be continue...)
