@@ -31,7 +31,7 @@ Qpred = tf.matmul(X, W1)
 
 # We need to define the parts of the network needed for learning a policy
 Y = tf.placeholder(shape=[None, output_size], dtype=tf.float32)
-# 여기서도 [None, output_size]를 [1, 2]로 봐도 무방합니다.
+# 여기서도 [None, output_size]를 [1, output_size]로 봐도 무방합니다.
 
 # Loss function
 loss = tf.reduce_sum(tf.square(Y - Qpred))
