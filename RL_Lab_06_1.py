@@ -3,17 +3,17 @@
 # 기존에 table로 했던 Q-learning은 100x100 미로나 80x80 픽셀에 RGB값까지 있는 게임에서 돌린다면
 # 엄청나게 많은 array의 값들을 감당할 수 없습니다. 그렇기 때문에 Q-table을 사용할 수 없습니다.
 
-# 따라서 table이 아닌 network로 돌릴 것입니다..
+# 따라서 table이 아닌 neural network(신경망)로 돌릴 것입니다..
 
-# network로 돌리는 방법은 두 가지가 있습니다.
+# neural network(신경망)로 돌리는 방법은 두 가지가 있습니다.
 # 첫 번째로, input으로 State(observation), Action으로 주고 network로 돌린 후 Q-value를 구하는 것
-# 두 번째로, input으로 State만 주고 network를 돌려 모든 Action값(Q-value)를 구하는 것
+# 두 번째로, input으로 State만 주고 neural network(여기서는 linear regression, 활성화 함수 X)를 돌려 모든 Action값(Q-value)를 구하는 것
 # 여기서는 두 번째 방법을 사용할 것입니다.
 
-# 결국 network로 한다는 것은 Unsupervised Learning으로써
+# 결국 network로 한다는 것은 Supervised Learning으로써
 # output값으로 Q-learning value(non-deterministic Q-learning Algorithm이 아닌 처음에 배운 deterministic Q-learning)
-# input값으로는 State만 주어서 network를 거친 값이 'y = R + r maxQ(s`)'와 같아지도록
-# 즉, network를 거친 cost를 converge하도록 만드는 Algorithm입니다.
+# input값으로는 State만 주어서 neural network를 거친 값이 'y = R + r maxQ(s`)'와 같아지도록
+# 즉, neural network(여기서는 linear regression, 활성화 함수 X)를 거친 cost를 converge하도록 만드는 Algorithm입니다.
 
 # 여기서 'non-deterministic Q-learning Algorithm이 아닌 처음에 배운 deterministic Q-learning' 라고 했는데
 # 이 이유는 cost를 converge되도록 만드는 것과 non-deterministic Q-learning Algorithm과 사실상 같은 작업을 하기 때문입니다.
@@ -83,6 +83,12 @@ with tf.Session() as sess:
         while not done:
             # Choose an action by greedily (with e chance of random action)
             # from the Q-network
+
+            # print(s)
+            # print(one_hot(s))
+            # [[ 1.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.]]
+            # 이런식으로 데이터 전처리를 해주어야 합니다.
+
             Qs = sess.run(Qpred, feed_dict={X: one_hot(s)})
             # 여기서는 add random noise가 아닌 E-greedy 방법으로 E&E action을 하였습니다.
             if np.random.rand(1) < e:
