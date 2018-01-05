@@ -4,22 +4,16 @@
 
 ## 목차
 
-* Playing OpenAI Gym Games
-  * RL_Lab_02
+* Playing OpenAI Gym Games - RL_Lab_02_1, 2
 
-* Dummy Q-learning (table)
-  * RL_Lab_03
+* Dummy Q-learning (table) - RL_Lab_03_1
 
-* Q-learning (table) exploit & exploration and discounted future reward
-  * RL_Lab_04
+* Q-learning (table) exploit & exploration and discounted future reward - RL_Lab_04_1, 2
 
-* Stochastic(non-deterministic) Q-learning
-  * RL_Lab_05
+* Stochastic(non-deterministic) Q-learning - RL_Lab_05_1, 2, 3
 
-* Q-Network
-  * RL_Lab_06
+* Q-Network - RL_Lab_06_1, 2, 3
 
-* Deep Q-Network(DQN)
-  * RL_Lab_07
+* Deep Q-Network(DQN) - RL_Lab_07
 
 (to be continue...)
