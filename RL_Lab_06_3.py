@@ -97,7 +97,8 @@ for episode in range(max_episodes):
         # Train our network using target and predicted Q values on each episode
         # 위에서 돌리는 것이 아니라 이 부분을 통해서 강화학습이 일어난다.
         # Q-learning 학습만 위의 코드를 통해서 action에 대한 Q-learning 값이 매겨지고
-        # Neural Network(linear regression)을 통해서 Supervised Learning으로 위에서 train으로 정한 것으로 인해 학습이 이루어진다. 캐중요!!!!!
+        # Neural Network(= linear regression, 여기서는 활성화함수를 안썼지만, 선형함수를 쓰고 있으므로 결국 NN = linear regression이다. 여기서만!!)을 통해서
+        # Supervised Learning으로 위의 코드에서 train으로 정한 것으로 인해 학습이 이루어진다. 캐중요!!!!!
         sess.run(train, feed_dict={X: x, Y: Q})
         state = next_state # 다음 state를 지금 state로 바꿔줍니다.
 
