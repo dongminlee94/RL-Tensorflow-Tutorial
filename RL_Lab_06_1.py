@@ -7,7 +7,7 @@
 
 # neural network(신경망)로 돌리는 방법은 두 가지가 있습니다.
 # 첫 번째로, input으로 State(observation), Action으로 주고 network로 돌린 후 Q-value를 구하는 것
-# 두 번째로, input으로 State만 주고 neural network(여기서는 linear regression, 활성화함수를 안쓰고 선형함수로 적용하면 결국 같다.)를 돌려
+# 두 번째로, input으로 State만 주고 neural network(= linear regression, 활성화함수를 안쓰고 선형함수로 적용하면 결국 같다.)를 돌려
 # 모든 Action값(Q-value)를 구하는 것.
 # 여기서는 두 번째 방법을 사용할 것입니다.
 

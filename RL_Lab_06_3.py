@@ -1,4 +1,4 @@
-# CartPole를 Q-learning을 이용하여 학습시켜보겠습니다.
+# CartPole를 Q-Network를 이용하여 학습시켜보겠습니다.
 
 import numpy as np
 import tensorflow as tf
@@ -23,8 +23,8 @@ W1 = tf.get_variable("W1", shape=[input_size, output_size],
 # Xavier 초깃값을 사용하면 앞 층에 노드가 많을수록 대상 노드의 초깃값으로 설정하는 가중치가 좁게 퍼집니다.(밑바닥부터 시작하는 딥러닝 205p.)
 
 # 보통은 tf.Variable(tf.random_uniform(...))이나 tf.Variable(tf.random_normal(...))을 많이 쓰지만
-# 시그모이드 함수같은 경우 0이나 1에 가까워지면 역전파에서 생기는 미분 값이 0에 수렴하다가
-# 역전파의 기울기 값(미분 값)이 점점 작아지다가 사라지는 'gradient vanishing'이 생기기 때문에 'relu' 함수를 사용하거나 층이 많을 경우 'Xavier'을 씁니다.
+# 시그모이드 함수같은 경우 0이나 1에 가까워지면 역전파에서 생기는 미분 값(기울기 값)이 0에 점점 수렴하다가(작아지다가) 사라지는
+# 'gradient vanishing'이 생기기 때문에 'relu' 함수를 사용하거나 층이 많을 경우 'Xavier'을 씁니다.
 # 간단히 말하자면, 그냥 치우치지 않게 가중치를 좁게 모아주는 함수입니다.
 
 Qpred = tf.matmul(X, W1)
