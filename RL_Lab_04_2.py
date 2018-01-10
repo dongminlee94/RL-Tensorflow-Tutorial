@@ -1,10 +1,11 @@
-# Dummy Q-learning (table)
-# exploit&exploration and discounted future reward 에 대한 코드입니다.
+"""
+Dummy Q-learning (table)
+exploit&exploration and discounted future reward 에 대한 코드입니다.
 
-## 지금 보여드리는 코드는 E-greedy이고, RL_Lab_04_1.py에 있는 것은 add random noise입니다.
+# 지금 보여드리는 코드는 E-greedy이고, RL_Lab_04_1.py에 있는 것은 add random noise입니다.
 
-# 기본적인 코드들은 RL_Lab_03_1.py를 참고 바랍니다.
-
+기본적인 코드들은 RL_Lab_03_1.py를 참고 바랍니다.
+"""
 import gym
 import numpy as np
 import matplotlib.pyplot as plt
@@ -38,7 +39,7 @@ for i in range(num_episodes):
 
     # The Q-Table learning algorithm
     while not done:
-        # Choose an action by e greedy, 여기 부분부터 E-greedy 코드입니다.
+        """ Choose an action by e greedy, 여기 부분부터 E-greedy 코드입니다. """
         if np.random.rand(1) < e:
             action = env.action_space.sample()
         else:

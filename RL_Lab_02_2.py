@@ -1,17 +1,23 @@
-# FrozenLake게임을 맛보기로 돌려보겠습니다.
+""" FrozenLake게임을 맛보기로 돌려보겠습니다. """
 
 import gym
 from gym.envs.registration import register
 import sys
-import tty # 터미널 = tty = 텍스트 입출력 환경
-# 유닉스 전문 용어로 tty는 단순히 읽기와 쓰기를 넘어 몇 가지 추가적인 명령어를 지원하는 디바이스 파일을 뜻합니다.
-# 그리고 터미널은 사실상 이 tty와 동일한 의미로 사용됩니다.
-# python docs
-# The tty module defines functions for putting the tty into cbreak and raw modes.
-# Because it requires the termios module, it will work only on Unix.
+import tty
+"""
+터미널 = tty = 텍스트 입출력 환경
+tty는 단순히 읽기와 쓰기를 넘어 몇 가지 추가적인 명령어를 지원하는 디바이스 파일을 뜻합니다.
+그리고 터미널은 사실상 이 tty와 동일한 의미로 사용됩니다.
 
-import termios # Low-level terminal control interface.
-# This module provides an interface to the POSIX calls for tty I/O control.
+python docs 설명
+The tty module defines functions for putting the tty into cbreak and raw modes.
+Because it requires the termios module, it will work only on Unix.
+"""
+import termios
+"""
+Low-level terminal control interface.
+This module provides an interface to the POSIX calls for tty I/O control.
+"""
 
 class _Getch:
     def __call__(self):
@@ -49,7 +55,7 @@ register(
 ) # 일부러 4x4로 지정하였습니다. 더 크게 할 수도 있습니다.
 
 env = gym.make('FrozenLake-v3')
-env.render()  # Show the initial board
+env.render() # Show the initial board
 
 while True:
     # Choose an action from keyboard

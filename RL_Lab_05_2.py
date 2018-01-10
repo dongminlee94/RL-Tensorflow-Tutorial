@@ -1,5 +1,4 @@
-# 실제 FrozenLake 게임을 Q-learning으로 해봅시다~!
-
+""" 실제 FrozenLake 게임을 Q-learning으로 해봅시다~! """
 import gym
 import numpy as np
 import matplotlib.pyplot as plt
@@ -31,7 +30,7 @@ for i in range(num_episodes):
         # Get new state and reward from environment
         new_state, reward, done, _ = env.step(action)
 
-        # Update Q-Table with new knowledge using learning rate
+        """ Update Q-Table with new knowledge using learning rate """
         Q[state, action] = reward + dis * np.max(Q[new_state, :])
         state = new_state
 
