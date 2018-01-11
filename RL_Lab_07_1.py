@@ -82,11 +82,11 @@ from collections import deque
 
 env = gym.make('CartPole-v0')
 
-INPUT_SIZE = env.observation_space.shape[0] # 4
-OUTPUT_SIZE = env.action_space.n # 2
+input_size = env.observation_space.shape[0] # 4
+output_size = env.action_space.n # 2
 
 dis = 0.99
-REPLAY_MEMORY = 50000
+REPLAY_MEMORY = 50000 # 버퍼의 최대용량
 
 class DQN:
 	def __init__(self, session, input_size, output_size, name = "main"):
@@ -101,7 +101,7 @@ class DQN:
 		# h_size는 hidden size를 말합니다.
 		with tf.variable_scope(self.net_name):
 			self._X = tf.placeholder (
-                tf.float32, [None, self.input_size], name="input_x")
+				tf.float32, [None, self.input_size], name="input_x")
 
 			# First layer of weights
 			W1 = tf.get_variable("W1", shape=[self.input_size, h_size],
@@ -127,23 +127,24 @@ class DQN:
 
 
 	def predict(self, state):
-	"""
-	예측 용도로 만든 코드입니다.
-	위에 물론 self._Qpred가 있지만 모델 용도로 사용하고,
-	predict로 따로 예측만 하도록 만듭니다.
-	state값만 주면 예측을 합니다.
+		"""
+		예측 용도로 만든 코드입니다.
+		위에 물론 'self._Qpred'가 있지만 Class로 따졌을 때 '_build_network'이라는 함수안에 있기 때문에
+		계속 build_network에서 'Qpred'을 불러오는 것은 코드상 좋지 않습니다.
+		따라서 Qpred는 모델 용도로만 사용하고,
+		predict로 따로 예측만 하도록 만듭니다. state값만 주면 예측을 합니다.
 
-	이 함수는 Qpred에도 쓰이고, Y 즉, Q-learning 값을 구할 때도 사용됩니다.
-	"""
+		이 함수는 Qpred에도 쓰이고, Y 즉, Q-learning 값을 구할 때도 사용됩니다.
+		"""
 		x = np.reshape(state, [1, self.input_size])
 		return self.session.run(self._Qpred, feed_dict={self._X: x})
 
 	def update(self, x_stack, y_stack):
-	""" 학습 용도로 만든 코드입니다. x, y값만 필요합니다."""
+		"""학습 용도로 만든 코드입니다. x, y값만 필요합니다. """
 		return self.session.run([self._loss, self._train],
 			feed_dict={self._X: x_stack, self._Y: y_stack})
 
-def simple_replay_train(DQN, train_batch):
+def replay_train(DQN, train_batch):
 	"""
 	여기서 train_batch는 minibatch에서 가져온 data들입니다.
 	x_stack은 state들을 쌓는 용도로이고,
@@ -151,12 +152,12 @@ def simple_replay_train(DQN, train_batch):
 
 	우선 쌓기전에 비어있는 배열로 만들어놓기로 하죠.
 	"""
-	x_stack = np.empty(0).reshape(0, DQN.input_size)
-	y_stack = np.empty(0).reshape(0, DQN.output_size)
+	x_stack = np.empty(0).reshape(0, DQN.input_size) # array(?, 4)
+	y_stack = np.empty(0).reshape(0, DQN.output_size) # array(?, 2)
 
 	# Get stored information from the buffer
 	"""for를 통해서 minibatch(train_batch)에서 가져온 값들을 하나씩 꺼냅니다."""
-	for state, action, reward, next_state, done in tarin_batch:
+	for state, action, reward, next_state, done in train_batch:
 		Q = DQN.predict(state)
 
 		# terminal
@@ -192,7 +193,7 @@ def bot_play(mainDQN) :
 		s, reward, done, _ = env.step(a)
 		reward_sum += reward
 		if done:
-			print "Total score: {}".format(reward_sum)
+			print("Total score: {}".format(reward_sum))
 			break
 
 def main():
@@ -203,18 +204,24 @@ def main():
 	replay_buffer = deque()
 
 	with tf.Session() as sess :
+		"""
+		밑에 있는 코드는 내장되어 있는 dqn에 우리가 만든 DQN 클래스를 끼어넣는 것이 mainDQN이 될 것입니다.
+		우리가만든 DQN을 한번 볼까요?
+		"""
 		mainDQN = dqn.DQN(sess, input_size, output_size)
-		# targetDQN = dqn.DQN(sess, input_size, output_size, name="target")
 		tf.global_variables_initializer().run()
 
 		for episode in range(max_episodes):
 			e = 1. / ((episode / 10) + 1)
 			done = False
 			step_count = 0
+			"""처음에 0으로 초기화!"""
 
 			state = env.reset()
 
 			while not done:
+
+				# E-greedy
 				if np.random.rand(1) < e :
 					action = env.action_space.sample()
 				else :
@@ -235,34 +242,55 @@ def main():
 
 				"""
 				만약에 버퍼에 저장한 값이 너무 많으면 안되니까 REPLAY_MEMORY값을 넘으면
-				맨 아래에 있던 값을 빼버리는(pop) 코드입니다.
+				맨 아래에 있던 값을 빼버리는(pop) 코드입니다.(스택은 비커, 큐는 식도)
 				"""
-				if len(replay_buffer) > REPLAY_MEMORY:
+				if len(replay_buffer) > REPLAY_MEMORY: # REPLAY_MEMORY = 50000
 					replay_buffer.popleft()
 
 				state = next_state
 				step_count += 1
 				if step_count > 10000: # Good enough
 					break
+				"""여기까지 버퍼에 50000개가 쌓일 것입니다."""
 
-			if step_count > 10000:
-				pass
-				break
+			print("Episode: {} step: {}".format(episode, step_count))
+			"""
+			Episode: 4462 step: 57
+            Episode: 4463 step: 34
+            Episode: 4464 step: 70
+            Episode: 4465 step: 200
+            Episode: 4466 step: 48
+            Episode: 4467 step: 115
+            Episode: 4468 step: 146
+            Episode: 4469 step: 38
+            Episode: 4470 step: 51
+            Episode: 4471 step: 70
+			"""
+
+            # """???"""
+			# if step_count > 10000:
+			# 	pass
+			# 	break
 
 			if episode % 10 == 1 : # train every 10 episodes
-			"""
-			max_episodes = 5000, for episode in range(max_episodes)
-			일정 시간이 지나면, 일정 episode가 쌓이면 학습을 시켜야합니다.
-			"""
+			# """
+			# max_episodes = 5000, for episode in range(max_episodes)
+			# 일정 시간이 지나면, 일정 episode가 쌓이면 학습을 시켜야합니다.
+			# """
 				# Get a random batch of experiences.
 				for _ in range(50):
 					# Minibatch works better
-					""""10개씩 가져와서 학습을 시킵니다."""
+					"""버퍼에서 10개를 랜덤으로 가져옵니다. -> minibatch"""
 					minibatch = random.sample(replay_buffer, 10)
-					loss, _ = simple_replay_train(mainDQN, minibatch)
-				print "Loss: ", loss
+					loss, _ = replay_train(mainDQN, minibatch)
+					"""
+					simple_replay_train를 통해 학습을 시킵니다.
+					simple_replay_train함수로 가볼까요?
+					"""
+				print("Loss: ", loss)
 
 		bot_play(mainDQN)
+		"""학습이 된 것으로 게임을 돌려봅시다~!"""
 
 if __name__ == "__main__":
 	main()
