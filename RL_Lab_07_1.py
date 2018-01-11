@@ -256,18 +256,18 @@ def main():
 			print("Episode: {} step: {}".format(episode, step_count))
 			"""
 			Episode: 4462 step: 57
-            Episode: 4463 step: 34
-            Episode: 4464 step: 70
-            Episode: 4465 step: 200
-            Episode: 4466 step: 48
-            Episode: 4467 step: 115
-            Episode: 4468 step: 146
-            Episode: 4469 step: 38
-            Episode: 4470 step: 51
-            Episode: 4471 step: 70
+			Episode: 4463 step: 34
+			Episode: 4464 step: 70
+			Episode: 4465 step: 200
+			Episode: 4466 step: 48
+			Episode: 4467 step: 115
+			Episode: 4468 step: 146
+			Episode: 4469 step: 38
+			Episode: 4470 step: 51
+			Episode: 4471 step: 70
 			"""
 
-            # """???"""
+			# """???"""
 			# if step_count > 10000:
 			# 	pass
 			# 	break
