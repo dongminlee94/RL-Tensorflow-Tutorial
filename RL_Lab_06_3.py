@@ -4,7 +4,8 @@ import numpy as np
 import tensorflow as tf
 
 import gym
-env = gym.make('CartPole-v0') """ 게임을 불러옵니다. """
+env = gym.make('CartPole-v0')
+""" 게임을 불러옵니다. """
 
 """ Constants defining our neural network """
 learning_rate = 1e-1

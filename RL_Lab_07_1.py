@@ -143,6 +143,7 @@ class DQN:
 		"""학습 용도로 만든 코드입니다. x, y값만 필요합니다. """
 		return self.session.run([self._loss, self._train],
 			feed_dict={self._X: x_stack, self._Y: y_stack})
+"""여기있는 DQN은 그저 보여주기용으로 만든 코드입니다. 게임에 돌릴 DQN은 dqn.py를 참고바랍니다."""
 
 def replay_train(DQN, train_batch):
 	"""
@@ -232,6 +233,7 @@ def main():
 				next_state, reward, done, _ = env.step(action)
 				if done: # big penalty
 					reward = -100
+				"""여기서 done을 받아서 while not done이 끝날수도 있습니다."""
 
 				# Save the experience to our buffer
 				"""
@@ -249,9 +251,17 @@ def main():
 
 				state = next_state
 				step_count += 1
-				if step_count > 10000: # Good enough
-					break
-				"""여기까지 버퍼에 50000개가 쌓일 것입니다."""
+				# if step_count > 10000: # Good enough
+				# 	break
+				"""
+				Episode: 1 buffer: 10000
+				Episode: 2 buffer: 20000
+				Episode: 3 buffer: 30000
+				Episode: 4 buffer: 40000
+				Episode: 5 buffer: 50000
+				Episode: 6 buffer: 50000 ...
+				이렇게 버퍼에 50000개가 쌓일 것입니다.
+				"""
 
 			print("Episode: {} step: {}".format(episode, step_count))
 			"""
@@ -266,11 +276,6 @@ def main():
 			Episode: 4470 step: 51
 			Episode: 4471 step: 70
 			"""
-
-			# """???"""
-			# if step_count > 10000:
-			# 	pass
-			# 	break
 
 			if episode % 10 == 1 : # train every 10 episodes
 			# """

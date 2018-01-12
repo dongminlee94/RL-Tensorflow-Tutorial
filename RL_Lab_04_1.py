@@ -37,7 +37,8 @@ env = gym.make('FrozenLake-v3')
 Q = np.zeros([env.observation_space.n, env.action_space.n])
 
 # Discount factor
-dis = 0.99 """ discounted reward를 설정해줍니다. 보통은 0.99 or 0.9로 합니다. """
+dis = 0.99
+"""discounted reward를 설정해줍니다. 보통은 0.99 or 0.9로 합니다."""
 num_episodes = 2000
 
 # create lists to contain total rewards and steps per episode
