@@ -7,7 +7,7 @@ Correlations between samples & Non-stationary targets
 
 두 가지 이유에 대해서 Deep하게 설명해보겠습니다.
 
-1. Correlations between samples
+1. Correlations between samples(env)
 여기서는 막대기를 세울려고 하기 때문에 env가 대부분 비슷할 것입니다.
 
 막대기를 세우기를 하면 루프를 5번 돌았다고 한다면 각각의 루프에서 받아오는 환경들은
@@ -153,8 +153,8 @@ def replay_train(DQN, train_batch):
 
 	우선 쌓기전에 비어있는 배열로 만들어놓기로 하죠.
 	"""
-	x_stack = np.empty(0).reshape(0, DQN.input_size) # array(?, 4)
-	y_stack = np.empty(0).reshape(0, DQN.output_size) # array(?, 2)
+	x_stack = np.empty(0).reshape(0, DQN.input_size) # array(10, 4)
+	y_stack = np.empty(0).reshape(0, DQN.output_size) # array(10, 2)
 
 	# Get stored information from the buffer
 	"""for를 통해서 minibatch(train_batch)에서 가져온 값들을 하나씩 꺼냅니다."""
@@ -206,8 +206,7 @@ def main():
 
 	with tf.Session() as sess :
 		"""
-		밑에 있는 코드는 내장되어 있는 dqn에 우리가 만든 DQN 클래스를 끼어넣는 것이 mainDQN이 될 것입니다.
-		우리가만든 DQN을 한번 볼까요?
+        dqn.py를 통해서 DQN 클래스에 있는 코드를 불러옵니다.
 		"""
 		mainDQN = dqn.DQN(sess, input_size, output_size)
 		tf.global_variables_initializer().run()
@@ -244,14 +243,14 @@ def main():
 
 				"""
 				만약에 버퍼에 저장한 값이 너무 많으면 안되니까 REPLAY_MEMORY값을 넘으면
-				맨 아래에 있던 값을 빼버리는(pop) 코드입니다.(스택은 비커, 큐는 식도)
+				맨 왼쪽에 있던 값을 빼버리는(pop) 코드입니다.(스택은 비커, 큐는 식도)
 				"""
 				if len(replay_buffer) > REPLAY_MEMORY: # REPLAY_MEMORY = 50000
 					replay_buffer.popleft()
 
 				state = next_state
 				step_count += 1
-				# if step_count > 10000: # Good enough
+				# if step_count > 10000: # Good enou쪽gh
 				# 	break
 				"""
 				Episode: 1 buffer: 10000

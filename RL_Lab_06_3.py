@@ -28,7 +28,7 @@ Xavier 초깃값을 사용하면 앞 층에 노드가 많을수록 대상 노드
 
 보통은 tf.Variable(tf.random_uniform(...))이나 tf.Variable(tf.random_normal(...))을 많이 쓰지만
 시그모이드 함수같은 경우 0이나 1에 가까워지면 역전파에서 생기는 미분 값(기울기 값)이 0에 점점 수렴하다가(작아지다가) 사라지는
-'gradient vanishing'이 생기기 때문에 'relu' 함수를 사용하거나 층이 많을 경우 'Xavier'을 씁니다.
+'vanishing gradient'이 생기기 때문에 'relu' 함수를 사용하거나 층이 많을 경우 'Xavier'을 씁니다.
 간단히 말하자면, 그냥 치우치지 않게 가중치를 좁게 모아주는 함수입니다.
 """
 

@@ -14,6 +14,6 @@
 
 * Q-Network - RL_Lab_06_1, 2, 3
 
-* Deep Q-Network(DQN) - RL_Lab_07_1
+* Deep Q-Network(DQN) - RL_Lab_07_1(NIPS 2013), 2(NIPS 2015)
 
 (to be continue...)

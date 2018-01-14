@@ -24,7 +24,8 @@ input값으로는 State만 주어서 neural network를 거친 값이 'y = R + r 
 사실상 같은 작업을 하기 때문입니다.
 
 하지만 Q-network에서는 큰 문제점이 있다. converge가 되어야 하는데 학습을 하면서 diverge가 됩니다.(발산한다.)
-이유는 두 가지입니다. Correlations between samples & Non-stationary targets이다.
+이유는 두 가지입니다.
+Correlations between samples & Non-stationary targets이다.
 
 하지만 DeepMind팀에서 DQN이라는 것이 나왔기 때문에 다음 07 Lab에서 공부해볼 것입니다.
 """
