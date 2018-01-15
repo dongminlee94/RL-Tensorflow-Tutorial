@@ -56,7 +56,7 @@ x = np.reshape(state, [1, input_size])
 1. Go deep
 말 그대로 deep하게 layer를 쌓으면서 고고!
 
-2. Experience replay(correlations between samples의 해결책)
+2. Capture and replay(correlations between samples의 해결책)
 각 state마다 env에서 action을 한 값들
 (state, action, reward, next_state, done)을 버퍼에 저장합니다.
 
@@ -65,9 +65,18 @@ x = np.reshape(state, [1, input_size])
 
 랜덤하게 가져와서 학습을 하기 때문에 그래프가 / 가 될 확률이 더 높습니다.
 
-3. Non-stationary targets
+3. Separate networks(Non-stationary targets의 해결책)
 Network를 두 개를 만듭니다. 하나는 Qpred에 대한 w(세타), 나머지 하나는 Y에 대한 w(세타),
 Y에 대한 세타는 가만히 두고, Qpred에 대한 w(세타)만 학습하도록 합니다.
+그리고 일정한 때에 'target network = main network'
+target network에 학습된 main network의 w(세타)를 복사합니다.
+복사를 하는 이유는 이 target도 새로운 업데이트된 값을 가져서 더 좋은 성능을 가지기 때문입니다.
+
+추가적으로 이해가 안될수 있기 때문에 말씀드리면,
+Y를 빌드업할 때 target network를 사용하고, 그 빌드업된 Y를 이용해서 main network를 업데이트합니다.
+그런다음에 target network = main network로 하여 network를 복사합니다.
+만약에 복사를 안한다면 target network는 더 좋은 weight와 bias가 있음에도 불구하고 같은 자리만 떠돌게 됩니다.
+한마디로 '좋은 w와 b만 골라서 먹겠다!' 라고 설명할 수 있습니다.
 
 이상 이론을 마치고, 코드랩을 진행해보겠습니다.
 
@@ -167,6 +176,10 @@ def replay_train(DQN, train_batch):
 		else :
 			# Obtain the Q' values by feeding the new state through our network
 			Q[0, action] = reward + dis * np.max(DQN.predict(next_state))
+            """
+            여기서 mian에 있는 action = np.argmax(mainDQN.predict(state))과
+            predict가 같이 쓰이고 있기 때문에 Non-stationary targets의 문제가 생깁니다.
+            """
 
 		"""np.vstack는 y_stack에 쌓기 위한 numpy함수입니다."""
 		y_stack = np.vstack([y_stack, Q])
@@ -206,7 +219,7 @@ def main():
 
 	with tf.Session() as sess :
 		"""
-        dqn.py를 통해서 DQN 클래스에 있는 코드를 불러옵니다.
+		dqn.py를 통해서 DQN 클래스에 있는 network만든 것을 생성합니다.
 		"""
 		mainDQN = dqn.DQN(sess, input_size, output_size)
 		tf.global_variables_initializer().run()
@@ -227,12 +240,12 @@ def main():
 				else :
 					# Choose an action by greedilty from the Q-network
 					action = np.argmax(mainDQN.predict(state))
+                """여기서 done을 받아서 while not done이 끝날수도 있습니다."""
 
 				# Get new state and reward from environment
 				next_state, reward, done, _ = env.step(action)
 				if done: # big penalty
 					reward = -100
-				"""여기서 done을 받아서 while not done이 끝날수도 있습니다."""
 
 				# Save the experience to our buffer
 				"""
