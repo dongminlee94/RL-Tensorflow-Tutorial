@@ -70,13 +70,21 @@ Network를 두 개를 만듭니다. 하나는 Qpred에 대한 w(세타), 나머�
 Y에 대한 세타는 가만히 두고, Qpred에 대한 w(세타)만 학습하도록 합니다.
 그리고 일정한 때에 'target network = main network'
 target network에 학습된 main network의 w(세타)를 복사합니다.
-복사를 하는 이유는 이 target도 새로운 업데이트된 값을 가져서 더 좋은 성능을 가지기 때문입니다.
+복사를 하는 이유는 target network에 새로운 업데이트된 값을 가져서 점점 더 좋은 성능을 가지도록 하기 때문입니다.
 
 추가적으로 이해가 안될수 있기 때문에 말씀드리면,
-Y를 빌드업할 때 target network를 사용하고, 그 빌드업된 Y를 이용해서 main network를 업데이트합니다.
-그런다음에 target network = main network로 하여 network를 복사합니다.
+Y를 빌드업할 때 target network = main network로 하여 main network를 복사합니다.
+그 빌드업된 Y를 이용해서 main network를 업데이트합니다.
 만약에 복사를 안한다면 target network는 더 좋은 weight와 bias가 있음에도 불구하고 같은 자리만 떠돌게 됩니다.
-한마디로 '좋은 w와 b만 골라서 먹겠다!' 라고 설명할 수 있습니다.
+
+한마디로
+1. target network = main network
+2. main network 업데이트
+3. self._loss = tf.reduce_mean(tf.square(self._Y(target) - self._Qpred(main)))을 이용해서 업데이트
+4. main network -> target network (copy)
+5. 2, 3, 4 반복
+(즉, 계속 target network는 점점 좋은 w, b를 적재할 수 있습니다.
+한마디로 '좋은 w와 b만 골라서 먹겠다!' 라고 설명할 수 있습니다.)
 
 이상 이론을 마치고, 코드랩을 진행해보겠습니다.
 

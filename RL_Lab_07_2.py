@@ -52,7 +52,6 @@ def replay_train(mainDQN, targetDQN, tarin_batch):
 	여기서 y_stack는 target network로 빌드업된 y(Q-learning value)입니다.
 	"""
 
-
 def bot_play(mainDQN) :
 	# See our trained network in action
 	s = env.reset()
